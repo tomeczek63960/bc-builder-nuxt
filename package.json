@@ -4,6 +4,7 @@
   "description": "BC + Nuxt + Builder",
   "author": "cc",
   "private": true,
+  "node": "14.17.4",
   "scripts": {
     "dev": "nuxt",
     "test": "jest --runInBand --detectOpenHandles --forceExit",
