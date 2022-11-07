@@ -24,6 +24,9 @@
   },
   "dependencies": {
     "@bigcommerce/checkout-sdk": "^1.160.0",
+    "@builder.io/react": "^2.0.10",
+    "@builder.io/sdk-vue": "0.0.5",
+    "@builder.io/vue": "^0.1.12",
     "@nuxtjs/axios": "^5.12.4",
     "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/proxy": "^2.1.0",

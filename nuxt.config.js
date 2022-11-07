@@ -1,3 +1,4 @@
+import { resolve } from 'path'
 import build from './config/build';
 import buildModules from './config/buildModules';
 import head from './config/head';
@@ -22,6 +23,9 @@ export default {
    ** Global Env Varialbes
    */
   env,
+  alias: {
+    '@builderComponents': resolve(__dirname, './builderComponents')
+  },
   /*
    ** Headers of the page
    */
