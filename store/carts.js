@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { embedCheckout } from '@bigcommerce/checkout-sdk';
 import axios from 'axios';
-import { API_URL, CHANNEL_ID } from '~/config/constants';
+import { API_URL } from '~/config/constants';
 import { CHECKOUT_TYPE } from '~/constants';
 import {
   getCartCheckoutRedirectUrl,
@@ -91,10 +91,10 @@ export const actions = {
 
   async createCart({ dispatch }, createData) {
     try {
-      console.log(CHANNEL_ID, 'here channel id');
+      console.log(process.env.channelId, 'here channel id');
       const cartData = {
         line_items: [{ ...createData }],
-        channel_id: `${CHANNEL_ID}`
+        channel_id: `${process.env.channelId}`
       };
 
       const { data } = await axios.post(`${API_URL}/createCart`, { cartData });
