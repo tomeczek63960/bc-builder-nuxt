@@ -93,7 +93,8 @@ export const actions = {
     try {
       const cartData = {
         line_items: [{ ...createData }],
-        channel_id: `${process.env.CHANNEL_ID}`
+        // channel_id: `${process.env.CHANNEL_ID}`
+        channel_id: `1`
       };
 
       const { data } = await axios.post(`${API_URL}/createCart`, { cartData });
