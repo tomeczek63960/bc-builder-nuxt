@@ -44,7 +44,6 @@ export default {
   async fetch() {
     try {
       const res = await builder.getAll('footer');
-      console.log(res);
       this.columnsNav = res[0].data.columnsNav;
       this.columnInfo = res[0].data.columnInfo;
       this.columnSocial = res[0].data.columnSocial;

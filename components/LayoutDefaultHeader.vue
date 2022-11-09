@@ -24,7 +24,6 @@ export default {
     } catch (error) {
       console.log('errrror');
     }
-    console.log(this.links);
   }
 };
 </script>
