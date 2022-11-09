@@ -1,5 +1,5 @@
 <template>
-  <div id="home">
+  <div id="home" class="container">
     <div v-if="canShowContent">
       <!-- <div>
         {{ (content && content.data && content.data.title) || 'Unpublished' }}
@@ -8,7 +8,7 @@
         model="page"
         :content="content"
         :api-key="apiKey"
-        :customComponents="getRegisteredComponents()"
+        :custom-components="getRegisteredComponents()"
       />
     </div>
     <div v-else>Content not Found</div>
