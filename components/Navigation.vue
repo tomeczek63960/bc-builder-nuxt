@@ -1,6 +1,12 @@
 <template>
   <div>
-    <div v-for="link in links" :key="link.name">{{ link.name }}</div>
+    <a
+      v-for="link in links"
+      :key="link.name"
+      :href="link.url"
+      class="nav-link"
+      >{{ link.name }}</a
+    >
   </div>
 </template>
 <script>
