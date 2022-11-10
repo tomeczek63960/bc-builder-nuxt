@@ -1,4 +1,4 @@
-import { resolve } from 'path'
+import { resolve } from 'path';
 import build from './config/build';
 import buildModules from './config/buildModules';
 import head from './config/head';
@@ -37,7 +37,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins,
+  plugins: [{ src: '~/plugins/vueAwesomeSwiper', mode: 'client' }],
   /*
    ** Nuxt.js dev-modules
    */
