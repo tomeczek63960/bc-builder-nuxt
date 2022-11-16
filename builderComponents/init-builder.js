@@ -1,6 +1,7 @@
 import HelloWorldComponent from '@builderComponents/HelloWorld.vue';
 import BigcommerceProductComponent from '@builderComponents/BigcommerceProductComponent.vue';
 import Carousel from '@builderComponents/Carousel.vue';
+import CustomBanner from '@builderComponents/CustomBanner.vue';
 import BigcommerceProductsList from '@builderComponents/BigcommerceProductsList.vue';
 
 const url =
@@ -38,6 +39,34 @@ export const REGISTERED_COMPONENTS = [
             name: 'content',
             type: 'uiBlocks',
             defaultValue: []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    component: CustomBanner,
+    name: 'CustomBanner',
+    canHaveChildren: true,
+    image: url,
+    inputs: [
+      {
+        name: 'bannerItems',
+        type: 'list',
+        subFields: [
+          {
+            name: 'image',
+            type: 'file'
+          },
+          {
+            name: 'heading',
+            type: 'text',
+            defaultValue: ''
+          },
+          {
+            name: 'content',
+            type: 'text',
+            defaultValue: ''
           }
         ]
       }
