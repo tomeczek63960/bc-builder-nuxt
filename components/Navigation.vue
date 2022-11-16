@@ -1,11 +1,11 @@
 <template>
   <div>
-    <a
+    <NuxtLink
       v-for="link in links"
       :key="link.name"
-      :href="link.url"
+      :to="link.url"
       class="nav-link"
-      >{{ link.name }}</a
+      >{{ link.name }}</NuxtLink
     >
   </div>
 </template>

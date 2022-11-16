@@ -6,7 +6,7 @@
         :key="index"
         class="product"
       >
-        <NuxtLink :to="item.path">
+        <NuxtLink :to="`/products${item.path}`">
           <div class="img-holder">
             <img class="img" :src="item.image" alt="" />
           </div>

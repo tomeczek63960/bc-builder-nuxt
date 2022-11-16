@@ -229,7 +229,7 @@ export default {
     return {
       productQtys: [],
       isGridView: true,
-      category: 'Shop All',
+      category: this.$route.params.slug,
       sidebarAccordion: [],
       showNumbersOnPage: ['5', '10', '20'],
       breadcrumbs: productsBreadcrumbs,
@@ -275,7 +275,8 @@ export default {
     }
   },
   mounted() {
-    this.getProductsByCategory();
+    console.log(this.$route.path);
+    this.getProductsByCategory({ path: this.$route.path });
     this.getCategories();
     this.canShowContent = this.content || isPreviewing();
   },
