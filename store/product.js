@@ -224,7 +224,6 @@ export const actions = {
       const { data } = await axios.get(
         `${API_URL}/getProductBySlug?slug=${slug}`
       );
-
       const product = data?.data?.site?.route?.node;
       if (product != null) {
         product.images = product.images.edges.map((t) => {

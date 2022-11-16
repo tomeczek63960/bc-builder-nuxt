@@ -59,19 +59,15 @@ export const getProductBySlug = async (req, res, next) => {
   }
 };
 
-export const getProductOption = async (id) => {
+export const getProductOption = async (req, res, next) => {
   try {
-    // export const getProductOption = async (req, res, next) => {
-    //   try {
-    const productId = id;
-    const data = await customAxios('api').get(
+    const productId = req.query.productId;
+    const { data } = await customAxios('api').get(
       `/stores/${process.env.STORE_HASH}/v3/catalog/products/${productId}?include=options,variants,modifiers&include_fields=id`
     );
-    return data;
-    // res.json(data);
+    res.json(data);
   } catch (error) {
-    // next(error);
-    console.log(error);
+    next(error);
   }
 };
 
