@@ -1,5 +1,5 @@
 <template>
-  <div id="home">
+  <div id="home" class="container">
     <div v-if="canShowContent">
       <!-- <div>
         {{ (content && content.data && content.data.title) || 'Unpublished' }}

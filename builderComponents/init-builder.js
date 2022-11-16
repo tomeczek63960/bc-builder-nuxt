@@ -1,6 +1,7 @@
 import HelloWorldComponent from '@builderComponents/HelloWorld.vue';
 import BigcommerceProductComponent from '@builderComponents/BigcommerceProductComponent.vue';
 import Carousel from '@builderComponents/Carousel.vue';
+import BigcommerceProductsList from '@builderComponents/BigcommerceProductsList.vue';
 
 const url =
   'https://tabler-icons.io/static/tabler-icons/icons-png/3d-cube-sphere-off.png';
@@ -50,6 +51,17 @@ export const REGISTERED_COMPONENTS = [
       {
         name: 'product',
         type: 'BigCommerceProduct'
+      }
+    ]
+  },
+  {
+    component: BigcommerceProductsList,
+    name: 'Bigcommerce product list',
+    image: url,
+    inputs: [
+      {
+        name: 'products',
+        type: 'BigCommerceProductsList'
       }
     ]
   }

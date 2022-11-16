@@ -12,6 +12,17 @@ export const searchProductByKey = async (req, res, next) => {
     next(error);
   }
 };
+export const searchProductById = async (req, res, next) => {
+  try {
+    const searchId = req.query.id;
+    const { data } = await customAxios('api').get(
+      `/stores/${process.env.STORE_HASH}/v3/catalog/products?id:in=${searchId}&include=primary_image`
+    );
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const getCategories = async (req, res, next) => {
   try {
@@ -48,15 +59,19 @@ export const getProductBySlug = async (req, res, next) => {
   }
 };
 
-export const getProductOption = async (req, res, next) => {
+export const getProductOption = async (id) => {
   try {
-    const productId = req.query.productId;
-    const { data } = await customAxios('api').get(
+    // export const getProductOption = async (req, res, next) => {
+    //   try {
+    const productId = id;
+    const data = await customAxios('api').get(
       `/stores/${process.env.STORE_HASH}/v3/catalog/products/${productId}?include=options,variants,modifiers&include_fields=id`
     );
-    res.json(data);
+    return data;
+    // res.json(data);
   } catch (error) {
-    next(error);
+    // next(error);
+    console.log(error);
   }
 };
 

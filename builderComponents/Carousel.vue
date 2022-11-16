@@ -14,7 +14,7 @@
 export default {
   props: {
     slider: {
-      type: Object
+      type: Array
     }
   },
   data() {
