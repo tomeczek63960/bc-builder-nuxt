@@ -16,9 +16,6 @@ export default {
       type: Array,
       default: null
     }
-  },
-  mounted() {
-    console.log(this.bannerItems);
   }
 };
 </script>

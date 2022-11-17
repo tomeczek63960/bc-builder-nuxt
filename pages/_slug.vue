@@ -275,7 +275,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$route.path);
     this.getProductsByCategory({ path: this.$route.path });
     this.getCategories();
     this.canShowContent = this.content || isPreviewing();

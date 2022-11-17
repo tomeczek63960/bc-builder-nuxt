@@ -5,8 +5,9 @@
         <a href="/" class="logo">
           <img v-if="image" :src="image" alt="" />
         </a>
-        <nav>
+        <nav class="nav">
           <Navigation :links="links" />
+          <Navigation :links="categories" />
         </nav>
       </div>
     </div>
@@ -14,6 +15,7 @@
 </template>
 <script>
 import { builder } from '@builder.io/vue';
+import { mapActions, mapGetters } from 'vuex';
 import Navigation from '~/components/Navigation';
 builder.init('b84bb3fc673840b3870f73bae790a1db');
 export default {
@@ -22,6 +24,7 @@ export default {
     return {
       image: '',
       links: []
+      // categoriesLinks: []
     };
   },
   async fetch() {
@@ -32,6 +35,18 @@ export default {
     } catch (error) {
       console.log('errrror');
     }
+  },
+  computed: {
+    ...mapGetters('product', ['categories'])
+  },
+  mounted() {
+    this.getCategories();
+    this.categoriesLinks = this.categories;
+  },
+  methods: {
+    ...mapActions({
+      getCategories: 'product/getCategories'
+    })
   }
 };
 </script>
@@ -64,6 +79,9 @@ export default {
 nav,
 .btn {
   margin-top: 1rem;
+}
+.nav {
+  display: flex;
 }
 .nav-link {
   color: #000;
