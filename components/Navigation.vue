@@ -3,7 +3,7 @@
     <NuxtLink
       v-for="link in links"
       :key="link.name"
-      :to="link.url ? link.url : link.path"
+      :to="link.url ? link.url : '/categories' + link.path"
       class="nav-link"
       >{{ link.name }}</NuxtLink
     >

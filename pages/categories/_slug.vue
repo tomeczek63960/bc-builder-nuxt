@@ -1,6 +1,7 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
   <div id="category">
+    CATEGORIA
     <SfBreadcrumbs
       class="breadcrumbs desktop-only"
       :breadcrumbs="breadcrumbs"
@@ -229,7 +230,7 @@ export default {
     return {
       productQtys: [],
       isGridView: true,
-      category: 'Shop All',
+      category: this.$route.params.slug,
       sidebarAccordion: [],
       showNumbersOnPage: ['5', '10', '20'],
       breadcrumbs: productsBreadcrumbs,
@@ -249,6 +250,7 @@ export default {
         urlPath: this.$route.path
       }
     });
+    console.log(content);
     this.canShowContent = content || isPreviewing();
     this.content = content;
     if (!this.canShowContent) {
@@ -275,7 +277,7 @@ export default {
     }
   },
   mounted() {
-    this.getProductsByCategory();
+    this.getProductsByCategory({ path: '/' + this.$route.params.slug });
     this.getCategories();
     this.canShowContent = this.content || isPreviewing();
   },

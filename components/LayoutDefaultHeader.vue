@@ -2,9 +2,9 @@
   <header class="header">
     <div class="container">
       <div class="header-left">
-        <a href="/" class="logo">
+        <NuxtLink to="/" class="logo">
           <img v-if="image" :src="image" alt="" />
-        </a>
+        </NuxtLink>
         <nav class="nav">
           <Navigation :links="links" />
           <Navigation :links="categories" />
