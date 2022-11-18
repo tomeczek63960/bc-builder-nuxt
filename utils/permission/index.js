@@ -15,6 +15,7 @@ const ACCESSIBLE_API_ENDPOINTS = [
   'POST_addAddress',
   'DELETE_deleteAddress',
   'GET_searchProductByKey',
+  'GET_searchProductById',
   'POST_customerLogin',
   'POST_customerRegister',
   'POST_customerLogOut',

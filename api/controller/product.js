@@ -12,6 +12,17 @@ export const searchProductByKey = async (req, res, next) => {
     next(error);
   }
 };
+export const searchProductById = async (req, res, next) => {
+  try {
+    const searchId = req.query.id;
+    const { data } = await customAxios('api').get(
+      `/stores/${process.env.STORE_HASH}/v3/catalog/products?id:in=${searchId}&include=primary_image`
+    );
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const getCategories = async (req, res, next) => {
   try {

@@ -1,122 +1,139 @@
 <template>
-  <div>
-    <SfHeader
-      :style="{ 'margin-bottom': '20px' }"
-      class="sf-header--has-mobile-navigation sf-header--has-mobile-search"
-      :cart-icon="false"
-      :account-icon="false"
-      :wishlist-icon="false"
-    >
-      <template #logo>
-        <SfLink link="/">
-          <SfImage
-            class="sf-header__logo"
-            width="150%"
-            src="/assets/logo.png"
-            alt="logo"
-          />
-        </SfLink>
-      </template>
-      <template #navigation>
-        <SfHeaderNavigationItem
-          v-for="item in menu"
-          :key="item.link"
-          :label="item.name"
-          :link="item.link"
-          @click="handleClick"
-        />
-      </template>
-      <template #search>
-        <SfSearchBar
-          placeholder="Search"
-          aria-label="Search"
-          class="sf-header__search"
-          @input="runSearchQuery"
-        ></SfSearchBar>
-      </template>
-    </SfHeader>
-    <SfModal
-      :visible="visible"
-      :overlay="false"
-      :cross="true"
-      :persistent="false"
-      @close="handleCloseModal"
-    >
-      <ul v-if="searchedProducts.length > 0" class="product_list">
-        <li
-          v-for="(product, key) in searchedProducts"
-          :key="key"
-          class="list_item"
-          @click="handleProductClick(product.path)"
-        >
-          <SfImage :width="60" :src="product.image" :alt="product.name" />
-          <span>{{ product.name }}</span>
-        </li>
-      </ul>
-      <h2 v-else>No results!</h2>
-    </SfModal>
-  </div>
+  <header class="header">
+    <div class="container">
+      <div class="header-left">
+        <NuxtLink to="/" class="logo">
+          <img v-if="image" :src="image" alt="" />
+        </NuxtLink>
+        <nav class="nav">
+          <Navigation :links="links" />
+          <Navigation :links="categories" />
+        </nav>
+      </div>
+    </div>
+  </header>
 </template>
-
 <script>
-import {
-  SfHeader,
-  SfSearchBar,
-  SfImage,
-  SfModal,
-  SfLink
-} from '@storefront-ui/vue';
-import { mapGetters, mapActions } from 'vuex';
-import { menu } from '~/constants';
+import { builder } from '@builder.io/vue';
+import { mapActions, mapGetters } from 'vuex';
+import Navigation from '~/components/Navigation';
+builder.init('b84bb3fc673840b3870f73bae790a1db');
 export default {
-  name: 'Home',
-  components: {
-    SfHeader,
-    SfSearchBar,
-    SfImage,
-    SfModal,
-    SfLink
-  },
-  props: {
-    menu: {
-      type: Array,
-      default() {
-        return [];
-      }
-    }
-  },
+  components: { Navigation },
   data() {
     return {
-      visible: false
+      image: '',
+      links: []
+      // categoriesLinks: []
     };
   },
+  async fetch() {
+    try {
+      const res = await builder.getAll('header-test');
+      this.image = res[0].data.image;
+      this.links = res[0].data.navigationtest.value.data.navigationLink;
+    } catch (error) {
+      console.log('errrror');
+    }
+  },
   computed: {
-    ...mapGetters('product', ['searchedProducts'])
+    ...mapGetters('product', ['categories'])
+  },
+  mounted() {
+    this.getCategories();
+    this.categoriesLinks = this.categories;
   },
   methods: {
     ...mapActions({
-      searchProductByKey: 'product/searchProductByKey'
-    }),
-    handleClick(e) {
-      const menuItem = e.target.getAttribute('data-testid');
-      if (menuItem) {
-        const route = menu.find((item) => item.name === menuItem).link;
-        this.$router.push(route);
-      }
-    },
-    runSearchQuery(key) {
-      if (key.length >= 3) {
-        this.visible = true;
-        this.searchProductByKey(key);
-      }
-    },
-    handleCloseModal() {
-      this.visible = false;
-    },
-    handleProductClick(path) {
-      this.visible = false;
-      this.$router.push('/products' + path);
-    }
+      getCategories: 'product/getCategories'
+    })
   }
 };
 </script>
+<style>
+.header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 2rem;
+  z-index: 999;
+}
+.header > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.header-fixed {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.header-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+nav,
+.btn {
+  margin-top: 1rem;
+}
+.nav {
+  display: flex;
+}
+.nav-link {
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-right: 1rem;
+}
+.btn {
+  color: #ffffff;
+  background-color: #395ece;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+}
+.btn--primary {
+  background-color: #395ece;
+}
+.btn--secondary {
+  background-color: #3c3f47;
+  border: 2px solid #ffffff;
+}
+.buttons a:first-child {
+  margin-right: 2rem;
+}
+@media (min-width: 768px) {
+  .header > div {
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 1rem 0;
+  }
+  .header-left {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  .logo {
+    margin-right: 4rem;
+  }
+  nav,
+  .btn {
+    margin-top: 0;
+  }
+}
+@media (min-width: 1024px) {
+  .header > div {
+    flex-wrap: nowrap;
+    width: 100%;
+  }
+  .header-left {
+    margin-bottom: 0;
+  }
+}
+</style>

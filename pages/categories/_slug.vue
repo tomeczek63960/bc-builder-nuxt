@@ -1,6 +1,7 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
   <div id="category">
+    CATEGORIA
     <SfBreadcrumbs
       class="breadcrumbs desktop-only"
       :breadcrumbs="breadcrumbs"
@@ -182,9 +183,17 @@
       </div>
       <CartSidebar :is-cart-sidebar-open="isCartSidebarOpen"></CartSidebar>
     </div>
+    <builder-render-content
+      model="page"
+      :content="content"
+      :api-key="apiKey"
+      :custom-components="getRegisteredComponents()"
+    />
   </div>
 </template>
 <script>
+import { RenderContent, getContent, isPreviewing } from '@builder.io/sdk-vue';
+import { REGISTERED_COMPONENTS } from '@builderComponents/init-builder.js';
 import {
   SfHeading,
   SfButton,
@@ -214,20 +223,41 @@ export default {
     SfAccordion,
     SfBreadcrumbs,
     SfSelect,
-    CartSidebar
+    CartSidebar,
+    'builder-render-content': RenderContent
   },
   data() {
     return {
       productQtys: [],
       isGridView: true,
-      category: 'Shop All',
+      category: this.$route.params.slug,
       sidebarAccordion: [],
       showNumbersOnPage: ['5', '10', '20'],
       breadcrumbs: productsBreadcrumbs,
       hoveredProduct: null,
       isCartSidebarOpen: false,
-      showProductNumber: '10'
+      showProductNumber: '10',
+      canShowContent: false,
+      content: null,
+      apiKey: process.env.builderPublicApiKey
     };
+  },
+  async fetch() {
+    const content = await getContent({
+      model: 'page',
+      apiKey: process.env.builderPublicApiKey,
+      userAttributes: {
+        urlPath: '/categories/shop-all/'
+      }
+    });
+    console.log(content);
+    this.canShowContent = content || isPreviewing();
+    this.content = content;
+    if (!this.canShowContent) {
+      if (this.$nuxt.context?.ssrContext?.res) {
+        this.$nuxt.context.ssrContext.res.statusCode = 404;
+      }
+    }
   },
   computed: {
     ...mapGetters('product', ['categories', 'products', 'showOnPage'])
@@ -247,8 +277,9 @@ export default {
     }
   },
   mounted() {
-    this.getProductsByCategory();
+    this.getProductsByCategory({ path: '/' + this.$route.params.slug });
     this.getCategories();
+    this.canShowContent = this.content || isPreviewing();
   },
   methods: {
     ...mapActions({
@@ -290,6 +321,9 @@ export default {
     },
     handleSidebarOpen() {
       this.isCartSidebarOpen = false;
+    },
+    getRegisteredComponents() {
+      return REGISTERED_COMPONENTS;
     }
   }
 };

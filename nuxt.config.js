@@ -1,9 +1,8 @@
-import { resolve } from 'path'
+import { resolve } from 'path';
 import build from './config/build';
 import buildModules from './config/buildModules';
 import head from './config/head';
 import css from './config/css';
-import plugins from './config/plugins';
 import modules from './config/modules';
 import axios from './config/axios';
 import toast from './config/toast';
@@ -37,7 +36,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins,
+  plugins: [{ src: '~/plugins/vueAwesomeSwiper', mode: 'client' }],
   /*
    ** Nuxt.js dev-modules
    */

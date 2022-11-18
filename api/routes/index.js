@@ -34,6 +34,7 @@ import {
   getProductBySlug,
   getCategories,
   searchProductByKey,
+  searchProductById,
   getProductOption,
   createWishlist,
   addToWishlistItem,
@@ -105,6 +106,7 @@ router.get(
 router.get('/getProductBySlug', permissionMiddleware, getProductBySlug);
 router.get('/getCategories', permissionMiddleware, getCategories);
 router.get('/searchProductByKey', permissionMiddleware, searchProductByKey);
+router.get('/searchProductById', permissionMiddleware, searchProductById);
 router.get('/getProductOption', permissionMiddleware, getProductOption);
 // storefront
 router.get('/storefront', permissionMiddleware, storefront);

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <div v-if="!product" id="error">
       <template v-if="!loading">
         <div class="img_not_found">
@@ -98,7 +98,7 @@
                 </div>
                 <SfSelect
                   v-else
-                  :key="key + `${option.field}`"
+                  :key="key + `${option.field} + 2`"
                   v-model="selectedField[option.field]"
                   :value="selectedField[option.field]"
                   :label="option.field"
@@ -127,7 +127,7 @@
                 />
                 <SfSelect
                   v-else
-                  :key="key + `${modifier.display_name}`"
+                  :key="key + `${modifier.display_name} + 2`"
                   v-model="selectedField[modifier.display_name]"
                   :value="selectedField[modifier.display_name]"
                   :label="modifier.display_name"
@@ -188,6 +188,12 @@
         </div>
       </div>
     </div>
+    <builder-render-content
+      model="product-by-slug"
+      :content="content"
+      :api-key="apiKey"
+      :custom-components="getRegisteredComponents()"
+    />
   </div>
 </template>
 <script>
@@ -211,6 +217,8 @@ import {
 import { mapGetters, mapActions } from 'vuex';
 import _ from 'lodash';
 import Loader from '@/components/Loader';
+import { RenderContent, getContent, isPreviewing } from '@builder.io/sdk-vue';
+import { REGISTERED_COMPONENTS } from '@builderComponents/init-builder.js';
 import { productBreadcrumbs } from '~/constants';
 export default {
   name: 'Product',
@@ -230,7 +238,8 @@ export default {
     SfProductOption,
     SfBreadcrumbs,
     SfInput,
-    Loader
+    Loader,
+    'builder-render-content': RenderContent
   },
   data() {
     return {
@@ -243,8 +252,28 @@ export default {
       modifiers: [],
       variants: [],
       optionFields: [],
-      modifierFields: []
+      modifierFields: [],
+      canShowContent: false,
+      content: null,
+      apiKey: process.env.builderPublicApiKey
     };
+  },
+  async fetch() {
+    const content = await getContent({
+      model: 'product-by-slug',
+      apiKey: process.env.builderPublicApiKey,
+      userAttributes: {
+        // urlPath: this.$route.path
+        urlPath: '/test-products-by-slug'
+      }
+    });
+    this.canShowContent = content || isPreviewing();
+    this.content = content;
+    if (!this.canShowContent) {
+      if (this.$nuxt.context?.ssrContext?.res) {
+        this.$nuxt.context.ssrContext.res.statusCode = 404;
+      }
+    }
   },
   computed: {
     ...mapGetters('product', ['product', 'loading']),
@@ -266,6 +295,7 @@ export default {
   },
   mounted() {
     this.getProductBySlug(this.$route.params.slug);
+    this.canShowContent = this.content || isPreviewing();
   },
   methods: {
     ...mapActions({
@@ -367,6 +397,9 @@ export default {
         }
         this.$store.dispatch('product/addToWishList', [wishListData]);
       }
+    },
+    getRegisteredComponents() {
+      return REGISTERED_COMPONENTS;
     }
   }
 };

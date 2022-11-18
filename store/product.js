@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import axios from 'axios';
+// import { customAxios } from '~/api/utils/axios';
 import { API_URL } from '~/config/constants';
 import { getSecuredData, getUser } from '~/utils/auth';
 import { getWishlistId, setWishlistId } from '~/utils/storage';
@@ -82,6 +83,7 @@ export const state = () => ({
   endCursor: '',
   showOnPage: 10,
   searchedProducts: [],
+  featuredProducts: [],
   wishlist: []
 });
 
@@ -112,6 +114,9 @@ export const getters = {
   },
   searchedProducts(state) {
     return state.searchedProducts;
+  },
+  featuredProducts(state) {
+    return state.featuredProducts;
   },
   wishlist(state) {
     return state.wishlist;
@@ -145,6 +150,9 @@ export const mutations = {
   },
   SET_SEARCHED_PRODUCTS(state, searchedProducts) {
     state.searchedProducts = searchedProducts;
+  },
+  SET_FEATURED_PRODUCTS(state, featuredProducts) {
+    state.featuredProducts = featuredProducts;
   },
   SET_WISHLIST(state, wishlist) {
     state.wishlist = wishlist;
@@ -216,7 +224,6 @@ export const actions = {
       const { data } = await axios.get(
         `${API_URL}/getProductBySlug?slug=${slug}`
       );
-
       const product = data?.data?.site?.route?.node;
       if (product != null) {
         product.images = product.images.edges.map((t) => {
@@ -276,6 +283,29 @@ export const actions = {
           '/assets/storybook/SfProductCard/no-product.jpg'
       }));
       commit('SET_SEARCHED_PRODUCTS', products);
+    } catch (error) {
+      console.log(error);
+      this.$toast.error('Something went wrong');
+    }
+  },
+  async searchProductById({ commit }, ids) {
+    try {
+      const { data } = await axios.get(
+        `${API_URL}/searchProductById?id=${ids.toString()}`,
+        {
+          headers: { 'X-Auth-Token': this.apiToken }
+        }
+      );
+
+      const products = data?.data?.map((item) => ({
+        path: item.custom_url?.url,
+        name: item.name,
+        price: item.calculated_price,
+        image:
+          item.primary_image?.url_standard ??
+          '/assets/storybook/SfProductCard/no-product.jpg'
+      }));
+      commit('SET_FEATURED_PRODUCTS', products);
     } catch (error) {
       console.log(error);
       this.$toast.error('Something went wrong');
@@ -347,6 +377,11 @@ export const actions = {
       this.$toast.error('Something went wrong');
     }
   },
+  // async getProductById({ commit }, id) {
+  //   const product = await customAxios('api').get(
+  //     `/stores/${process.env.STORE_HASH}/v3/catalog/products?include_fields=name,description,price&include=variants,primary_image&id:in=${id}`
+  //   );
+  // },
   async removeWishlistItem({ dispatch }, wishlistItemId) {
     try {
       const wishlistId = getWishlistId();

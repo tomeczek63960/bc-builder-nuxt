@@ -73,7 +73,7 @@ module.exports = {
         bracketSpacing: true,
         jsxBracketSameLine: false,
         arrowParens: 'always',
-        endOfLine: 'lf'
+        endOfLine: 'auto'
       }
     ]
   }
