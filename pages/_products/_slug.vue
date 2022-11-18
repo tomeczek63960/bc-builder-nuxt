@@ -263,7 +263,8 @@ export default {
       model: 'product-by-slug',
       apiKey: process.env.builderPublicApiKey,
       userAttributes: {
-        urlPath: this.$route.path
+        // urlPath: this.$route.path
+        urlPath: '/test-products-by-slug'
       }
     });
     this.canShowContent = content || isPreviewing();

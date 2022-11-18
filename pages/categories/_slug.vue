@@ -247,7 +247,7 @@ export default {
       model: 'page',
       apiKey: process.env.builderPublicApiKey,
       userAttributes: {
-        urlPath: this.$route.path
+        urlPath: '/categories/shop-all/'
       }
     });
     console.log(content);
